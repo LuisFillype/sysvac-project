@@ -379,9 +379,9 @@
     "ajv" "^6.12.6"
 
 "@fastify/static@^5.0.0":
-  "integrity" "sha512-HvyXZ5a7hUHoSBRq9jKUuKIUCkHMkCDcmiAeEmixXlGOx8pEWx3NYOIaiivcjWa6/NLvfdUT+t/jzfVQ2PA7Gw=="
-  "resolved" "https://registry.npmjs.org/@fastify/static/-/static-5.0.2.tgz"
-  "version" "5.0.2"
+  "integrity" "sha512-GGltJkO0idXa7yCZ0PfdTZ6qokWDX/vigCvmRpjOU2A3jc93c9p+oHDvHmwHK60hwWoBEGqHjGofVyn3H1CjZg=="
+  "resolved" "https://registry.npmjs.org/@fastify/static/-/static-5.0.0.tgz"
+  "version" "5.0.0"
   dependencies:
     "content-disposition" "^0.5.3"
     "encoding-negotiator" "^2.0.1"
@@ -2795,7 +2795,7 @@
     "openapi-types" "^10.0.0"
     "rfdc" "^1.3.0"
 
-"fastify-swagger@*", "fastify-swagger@^5.2.0":
+"fastify-swagger@^5.2.0":
   "integrity" "sha512-yKct50Mev9YIrhd2FRO4AChcJM9JwTBCziIjA4C+AI+hV2ystaIklgHVEwHoyqlaeQ+B4gZ1Z5rgOE87i4llLg=="
   "resolved" "https://registry.npmjs.org/fastify-swagger/-/fastify-swagger-5.2.0.tgz"
   "version" "5.2.0"
