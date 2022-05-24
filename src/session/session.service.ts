@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import BCryptHashProvider from 'src/providers/hashProdiver';
-import JWTProvider from 'src/providers/jwtProvider';
+import { BCryptHashProvider } from 'src/providers/hashProdiver';
+import { JWTProvider } from 'src/providers/jwtProvider';
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateSessionDTO } from './dto/create-session.dto';
