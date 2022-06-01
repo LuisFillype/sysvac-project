@@ -44,7 +44,7 @@ export class CreateUserDTO {
   email: string;
 
   /**
-   * @example 12345678901
+   * @example 12345679901
    */
   @IsString()
   @IsNotEmpty()
@@ -65,7 +65,7 @@ export class CreateUserDTO {
   phone: string;
 
   /**
-   * @example admin
+   * @example user
    */
   @IsEnum(UserFunction)
   @IsNotEmpty()
