@@ -1,8 +1,14 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { BCryptHashProvider } from 'src/providers/hashProdiver';
 import { Repository } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { User } from './entities/users.entity';
+import { FindUserDTO } from './dto/find-user.dto';
+import { User, UserFunction } from './entities/users.entity';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +41,7 @@ export class UsersService {
     const userIsAdmin = await this.userRepository.findOne({
       where: {
         id: userIdLogged,
+        function: UserFunction.ADMIN,
       },
     });
 
@@ -42,15 +49,39 @@ export class UsersService {
       throw new HttpException('Cannot create a user', 400);
     }
 
+    if (
+      UserFunction.ADMIN == createUserDTO.function ||
+      !Object.values(UserFunction).includes(createUserDTO.function)
+    ) {
+      throw new HttpException('Invalid user function', 403);
+    }
+
     const hasUser = await this.userRepository.findOne({
       where: {
-        email: createUserDTO.email,
+        cpf: createUserDTO.cpf,
       },
     });
 
     if (hasUser) {
-      throw new HttpException('User already exist', 400);
+      throw new ForbiddenException('User already exist');
     }
+    const emailIsAvaliable = await this.userRepository.findOne({
+      where: {
+        email: createUserDTO.email,
+      },
+    });
+    if (emailIsAvaliable) {
+      throw new ForbiddenException('Email already exist');
+    }
+
+    const phoneIsAvailable = await this.userRepository.findOne({
+      where: { phone: createUserDTO.phone },
+    });
+
+    if (phoneIsAvailable) {
+      throw new ForbiddenException('Phone already exist');
+    }
+
     const userToRegistry = new User();
 
     userToRegistry.name = createUserDTO.name;
