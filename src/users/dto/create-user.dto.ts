@@ -3,25 +3,25 @@ import { UserFunction } from '../entities/users.entity';
 
 class EndressDTO {
   /**
-   * @example cidade
+   * @example Santa rita do sapucai
    */
   @IsString()
   @IsNotEmpty()
   city: string;
   /**
-   * @example bairro
+   * @example Maristela
    */
   @IsString()
   @IsNotEmpty()
   district: string;
   /**
-   * @example numero
+   * @example 999
    */
   @IsString()
   @IsNotEmpty()
   number: string;
   /**
-   * @example numero
+   * @example Rua das Ruas
    */
   @IsString()
   @IsNotEmpty()
@@ -37,42 +37,40 @@ export class CreateUserDTO {
   name: string;
 
   /**
-   * @example email
+   * @example novousuario@email.com
    */
   @IsString()
   @IsNotEmpty()
   email: string;
 
   /**
-   * @example cpf
+   * @example 12345678901
    */
   @IsString()
   @IsNotEmpty()
   cpf: string;
 
   /**
-   * @example senha
+   * @example 12345
    */
   @IsString()
   @IsNotEmpty()
   password: string;
 
   /**
-   * @example telefone
+   * @example 359988888888
    */
   @IsString()
   @IsNotEmpty()
   phone: string;
 
   /**
-   * @example funcao
+   * @example admin
    */
   @IsEnum(UserFunction)
   @IsNotEmpty()
   function: UserFunction;
-  /**
-   * @example EndressDTO
-   */
+
   @IsObject()
   @IsNotEmpty()
   endress: EndressDTO;
