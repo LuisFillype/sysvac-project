@@ -1,12 +1,18 @@
 import { Exclude } from 'class-transformer';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 export enum UserFunction {
   ADMIN = 'admin',
   USER = 'user',
 }
-@Entity({ name: ' users' })
-// @Unique([])
+@Entity({ name: 'users' })
+@Unique(['email', 'phone'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
