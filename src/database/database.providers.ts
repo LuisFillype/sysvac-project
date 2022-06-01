@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { createConnection } from 'typeorm';
 require('dotenv').config();
 
