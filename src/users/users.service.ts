@@ -12,8 +12,23 @@ export class UsersService {
     private bcryptHash: BCryptHashProvider,
   ) {}
 
-  async findOne() {
-    return;
+  async findOne(loggedUserId: string, { cpf }: FindUserDTO) {
+    const userIsAdmin = await this.userRepository.findOne({
+      where: { id: loggedUserId, function: UserFunction.ADMIN },
+    });
+
+    if (!userIsAdmin) {
+      throw new HttpException('Does not have permission', 403);
+    }
+
+    const userToFind = await this.userRepository.findOne({
+      where: { cpf },
+    });
+
+    if (!userToFind) {
+      throw new HttpException('User not found', 404);
+    }
+    return userToFind;
   }
 
   async create(createUserDTO: CreateUserDTO, userIdLogged: string) {

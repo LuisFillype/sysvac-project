@@ -12,6 +12,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthMiddleware } from 'src/middleware/auth';
 import { CreateUserDTO } from './dto/create-user.dto';
+import { FindUserDTO } from './dto/find-user.dto';
 import { UsersService } from './users.service';
 
 @ApiTags('User Routes')
@@ -28,8 +29,12 @@ export class UsersController {
 
     return this.userService.create(createUserDTO, userLogged);
   }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return;
+
+  @ApiBearerAuth()
+  @Post(':id')
+  @UseGuards(AuthMiddleware)
+  findOne(@Req() request: any, @Body() findUserDTO: FindUserDTO) {
+    const userLogged = request.user.id;
+    return this.userService.findOne(userLogged, findUserDTO);
   }
 }
