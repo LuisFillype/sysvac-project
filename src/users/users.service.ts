@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import BCryptHashProvider from 'src/providers/hashProdiver';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { BCryptHashProvider } from 'src/providers/hashProdiver';
 import { Repository } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
@@ -16,25 +16,41 @@ export class UsersService {
     return;
   }
 
-  async create(createUserDTO: CreateUserDTO) {
-    // const userIsAdmin = await
+  async create(createUserDTO: CreateUserDTO, userIdLogged: string) {
+    const userIsAdmin = await this.userRepository.findOne({
+      where: {
+        id: userIdLogged,
+      },
+    });
+
+    if (!userIsAdmin) {
+      throw new HttpException('Cannot create a user', 400);
+    }
+
     const hasUser = await this.userRepository.findOne({
       where: {
         email: createUserDTO.email,
       },
     });
-    const response = new User();
-    response.name = createUserDTO.name;
-    response.cpf = createUserDTO.cpf;
-    response.email = createUserDTO.email;
-    response.phone = createUserDTO.phone;
-    response.city = createUserDTO.endress.city;
-    response.street = createUserDTO.endress.street;
-    response.district = createUserDTO.endress.district;
-    response.number = createUserDTO.endress.number;
-    response.function = createUserDTO.function;
-    response.password = await this.bcryptHash.generate(createUserDTO.password);
 
-    return this.userRepository.save(response);
+    if (hasUser) {
+      throw new HttpException('User already exist', 400);
+    }
+    const userToRegistry = new User();
+
+    userToRegistry.name = createUserDTO.name;
+    userToRegistry.cpf = createUserDTO.cpf;
+    userToRegistry.email = createUserDTO.email;
+    userToRegistry.phone = createUserDTO.phone;
+    userToRegistry.city = createUserDTO.endress.city;
+    userToRegistry.street = createUserDTO.endress.street;
+    userToRegistry.district = createUserDTO.endress.district;
+    userToRegistry.number = createUserDTO.endress.number;
+    userToRegistry.function = createUserDTO.function;
+    userToRegistry.password = await this.bcryptHash.generate(
+      createUserDTO.password,
+    );
+
+    return this.userRepository.save(userToRegistry);
   }
 }
