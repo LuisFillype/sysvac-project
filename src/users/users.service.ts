@@ -1,13 +1,16 @@
 import {
+  BadRequestException,
   ForbiddenException,
   HttpException,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { BCryptHashProvider } from 'src/providers/hashProdiver';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { FindUserDTO } from './dto/find-user.dto';
+import { UpdateUserDTO } from './dto/update-user.dto';
 import { User, UserFunction } from './entities/users.entity';
 
 @Injectable()
@@ -37,10 +40,29 @@ export class UsersService {
     return userToFind;
   }
 
-  async create(createUserDTO: CreateUserDTO, userIdLogged: string) {
+  async findAll(loggedUserId: string) {
     const userIsAdmin = await this.userRepository.findOne({
       where: {
-        id: userIdLogged,
+        id: loggedUserId,
+        function: UserFunction.ADMIN,
+      },
+    });
+
+    if (!userIsAdmin) {
+      throw new ForbiddenException('Does not have permission');
+    }
+
+    const allUsers = await this.userRepository.find({
+      where: { id: Not(loggedUserId) },
+    });
+
+    return allUsers;
+  }
+
+  async create(createUserDTO: CreateUserDTO, loggedUserId: string) {
+    const userIsAdmin = await this.userRepository.findOne({
+      where: {
+        id: loggedUserId,
         function: UserFunction.ADMIN,
       },
     });
@@ -98,5 +120,65 @@ export class UsersService {
     );
 
     return this.userRepository.save(userToRegistry);
+  }
+
+  async update(loggedUserId: string, updateUserDTO: UpdateUserDTO, id: string) {
+    const userLogged = await this.userRepository.findOne({
+      where: { id: loggedUserId, function: UserFunction.ADMIN },
+    });
+
+    if (!userLogged) {
+      throw new HttpException('Does not have permission', 403);
+    }
+
+    const userToUpdate = await this.userRepository.findOne({ where: { id } });
+
+    if (!userToUpdate) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (
+      userLogged.function !== UserFunction.ADMIN &&
+      userToUpdate.id !== loggedUserId
+    ) {
+      throw new ForbiddenException('Does not have permission');
+    }
+
+    if (
+      userLogged.function === UserFunction.ADMIN &&
+      userToUpdate.id === userLogged.id
+    ) {
+      throw new ForbiddenException(
+        'Does not have permission to change user function',
+      );
+    }
+
+    if (updateUserDTO.function === UserFunction.ADMIN) {
+      throw new ForbiddenException('Invalid Function');
+    }
+
+    if (updateUserDTO.email) {
+      const emailIsAvaliable = await this.userRepository.findOne({
+        where: { email: updateUserDTO.email, id: Not(id) },
+      });
+
+      if (emailIsAvaliable) {
+        throw new BadRequestException('Email already exist');
+      }
+    }
+
+    if (updateUserDTO.phone) {
+      const phoneIsAvailable = await this.userRepository.findOne({
+        where: { phone: updateUserDTO.phone, id: Not(id) },
+      });
+
+      if (phoneIsAvailable) {
+        throw new BadRequestException('Phone already exist');
+      }
+    }
+
+    Object.assign(userToUpdate, updateUserDTO);
+
+    return await this.userRepository.save(userToUpdate);
   }
 }
