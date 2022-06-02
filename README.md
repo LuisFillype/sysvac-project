@@ -22,13 +22,15 @@
 
 ```bash
 $ npm install
+$ yarn seed:run
+$ docker-compose up -d
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn start:dev
 
 # watch mode
 $ npm run start:dev
@@ -37,7 +39,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Test no implement yet
 
 ```bash
 # unit tests
