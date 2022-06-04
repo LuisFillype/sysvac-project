@@ -1,7 +1,7 @@
 import { IsEnum, IsNotEmpty, IsObject, IsString } from 'class-validator';
 import { UserFunction } from '../entities/users.entity';
 
-class EndressDTO {
+export class EndressDTO {
   /**
    * @example Santa rita do sapucai
    */
