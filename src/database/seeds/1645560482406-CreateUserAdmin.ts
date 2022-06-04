@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BCryptHashProvider } from 'src/providers/hashProdiver';
 import { UserFunction } from 'src/users/entities/users.entity';
 import { getRepository, MigrationInterface, QueryRunner } from 'typeorm';
