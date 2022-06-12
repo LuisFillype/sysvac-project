@@ -27,7 +27,7 @@
     "seed:create": "npm run build && npm run typeorm migration:create -- -c seed -n",
     "seed:run": "npm run build && npm run typeorm migration:run -- -c seed",
     "seed:revert": "npm run build && npm run typeorm migration:revert -- -c seed",
-    "commit": "git-cz", 
+    "commit": "git-cz",
     "prepare": "husky install"
   },
   "dependencies": {
