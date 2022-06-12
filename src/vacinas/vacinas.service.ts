@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { async } from 'rxjs';
 import { Repository } from 'typeorm';
-import { UserVacsPostos } from './entities/user-vacs-postos.entity';
+import { UserVacs } from './entities/user-vacs.entity';
 import { Vacina } from './entities/vacina.entity';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class VacinasService {
     @Inject('VACINA_REPOSITORY')
     private vacinaRepository: Repository<Vacina>,
     @Inject('USER_VACS_REPOSITORY')
-    private vacinaUserRepository: Repository<UserVacsPostos>,
+    private vacinaUserRepository: Repository<UserVacs>,
   ) {}
 
   async test() {
@@ -26,7 +26,7 @@ export class VacinasService {
     vacina2.intervalo = '3';
     vacina2.nome = 'vacina2';
 
-    const userVac = new UserVacsPostos();
+    const userVac = new UserVacs();
     userVac.numero_dose = 1;
     userVac.vacinas = [vacina, vacina2];
 
