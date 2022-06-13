@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Token } from 'src/password_reset/entities/tokens.entity';
+import { UserVacPostos } from 'src/user_vacs_postos/entities/user_vac_postos.entity';
 import {
   BaseEntity,
   Column,
@@ -56,4 +57,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Token, (tokens) => tokens.user)
   tokens: Token[];
+
+  @OneToMany(() => UserVacPostos, (UserVacPostos) => UserVacPostos.id)
+  user_vac_postos: UserVacPostos[];
 }

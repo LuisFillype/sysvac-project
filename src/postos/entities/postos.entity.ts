@@ -1,7 +1,9 @@
+import { UserVacPostos } from 'src/user_vacs_postos/entities/user_vac_postos.entity';
 import {
   BaseEntity,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -35,4 +37,7 @@ export class Posto extends BaseEntity {
 
   @Column()
   email: string;
+
+  @OneToMany(() => UserVacPostos, (UserVacPostos) => UserVacPostos.id)
+  user_vac_postos: UserVacPostos[];
 }
