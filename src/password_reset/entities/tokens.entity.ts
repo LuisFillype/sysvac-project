@@ -5,6 +5,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -27,4 +29,8 @@ export class Token extends BaseEntity {
     onUpdate: 'NOW()',
   })
   updated_at: Date;
+
+  @ManyToOne(() => User, (user) => user.tokens)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

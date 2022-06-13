@@ -1,8 +1,10 @@
 import { Exclude } from 'class-transformer';
+import { Token } from 'src/password_reset/entities/tokens.entity';
 import {
   BaseEntity,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -51,4 +53,7 @@ export class User extends BaseEntity {
     default: UserFunction.USER,
   })
   function: UserFunction;
+
+  @OneToMany(() => Token, (tokens) => tokens.user)
+  tokens: Token[];
 }
