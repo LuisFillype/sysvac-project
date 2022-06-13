@@ -5,12 +5,11 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('tokens')
+@Entity({ name: 'tokens' })
 export class Token extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -28,12 +27,4 @@ export class Token extends BaseEntity {
     onUpdate: 'NOW()',
   })
   updated_at: Date;
-
-  @ManyToOne(() => User, (user) => user.id, {
-    eager: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'user_id' })
-  user: User;
 }
