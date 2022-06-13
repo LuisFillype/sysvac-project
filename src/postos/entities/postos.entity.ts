@@ -32,4 +32,7 @@ export class Posto extends BaseEntity {
 
   @Column()
   number: string;
+
+  @Column()
+  email: string;
 }
