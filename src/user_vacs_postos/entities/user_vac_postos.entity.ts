@@ -3,10 +3,12 @@ import { User } from 'src/users/entities/users.entity';
 import { Vacina } from 'src/vacinas/entities/vacina.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'user_vac_postos' })
@@ -35,4 +37,15 @@ export class UserVacPostos {
   @ManyToOne(() => User, (user) => user.id)
   @JoinColumn({ name: 'id_user' })
   id_user: string;
+
+  @CreateDateColumn({
+    default: () => 'NOW()',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    default: () => 'NOW()',
+    onUpdate: 'NOW()',
+  })
+  updated_at: Date;
 }

@@ -4,16 +4,19 @@ import { UserVacPostos } from 'src/user_vacs_postos/entities/user_vac_postos.ent
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
+  UpdateDateColumn,
 } from 'typeorm';
 
 export enum UserFunction {
   ADMIN = 'admin',
   USER = 'user',
 }
+
 @Entity({ name: 'users' })
 @Unique(['email', 'phone'])
 export class User extends BaseEntity {
@@ -47,6 +50,17 @@ export class User extends BaseEntity {
 
   @Column()
   number: string;
+
+  @CreateDateColumn({
+    default: () => 'NOW()',
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    default: () => 'NOW()',
+    onUpdate: 'NOW()',
+  })
+  updated_at: Date;
 
   @Column({
     type: 'enum',
